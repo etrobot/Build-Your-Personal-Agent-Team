@@ -1,77 +1,58 @@
 # Build-Your-Personal-Agent-Team
 
-**Build your own agent. Understand the pieces. Choose your boundaries.**
+**Build your own agent team. Understand the pieces. Choose your boundaries.**
 
-A curated map of open-source projects, architectural patterns, and building blocks for creating your own Personal Agent.
+A curated map of open-source projects, architectural patterns, and building blocks for assembling your own **Personal Agent Team**.
 
-This is not another agent framework. It helps you explore the ecosystem, understand how the pieces fit together, and build an agent that works the way you want.
-
-## How a Personal Agent is Built
-
-Think in components, not frameworks.
-
-| Layer | Responsibility | Examples |
-|---|---|---|
-| Interface | Where you interact | Telegram, Discord, Web |
-| Gateway | Connects channels to agents | Bot servers, messaging bridges |
-| Runtime | Executes agent logic | Pi, LangGraph, Agents SDK |
-| Memory | Stores context and knowledge | Files, databases, vector stores |
-| Tools | Connects external capabilities | MCP, APIs, integrations |
-| Computer Use | Interacts with software | Browser Use, Skyvern |
-| Scheduling | Runs tasks proactively | Cron, workflow engines |
-| Infrastructure | Runs and secures the system | Docker, VPS, local machine |
-
-These are composable building blocks, not mandatory layers. Choose what you need. Replace what you don't.
-
-## Explore the Ecosystem
-
-### Personal Agent Projects
-- [OpenBot](https://github.com/CopilotKit/OpenBot)
-- [Rakazo](https://github.com/elie222/rakazo)
-- [OpenClaw](https://github.com/openclaw/openclaw)
-
-### Agent Runtimes
-- [Pi](https://github.com/badlogic/pi-mono)
-- [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)
-- [LangGraph](https://github.com/langchain-ai/langgraph)
-- [AutoGen](https://github.com/microsoft/autogen)
-
-### Messaging & Interfaces
-- [Pi Telegram Server](https://github.com/ken196502/pi-telegram-server)
-- [grammY](https://github.com/grammyjs/grammY)
-- [Telegraf](https://github.com/telegraf/telegraf)
-- [Discord.js](https://github.com/discordjs/discord.js)
-
-### Tools & Integrations
-- [Model Context Protocol](https://modelcontextprotocol.io/)
-- [Browser Use](https://github.com/browser-use/browser-use)
-- [Skyvern](https://github.com/Skyvern-AI/skyvern)
-- [n8n](https://github.com/n8n-io/n8n)
-
-## Reference Architecture: Telegram + Pi
-
-A lightweight way to use an existing Pi session remotely:
-
-**Telegram → Bot Gateway → Pi Extension → tmux → Pi TUI**
-
-The gateway bridges Telegram messages to a running Pi process. tmux keeps the session persistent and lets you attach locally.
-
-[Pi Telegram Server](https://github.com/ken196502/pi-telegram-server) is an example of this approach. It provides the bridge; users decide how to customize the agent and its capabilities.
-
-## Repository Structure
-
-- [`projects/`](projects/) — Open-source project catalog
-- [`architecture/`](docs/architecture/) — Architecture patterns and diagrams
-- [`guides/`](docs/guides/) — Practical integration guides
-- [`decisions/`](docs/decisions/) — Technical trade-offs and design choices
-- [`resources/`](resources/) — Papers, articles, tutorials, and talks
-
-## Contribute
-
-Found a useful project, integration pattern, or architectural insight? Contributions are welcome.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+This is not another monolithic agent framework. Instead of trapping your agents inside a black-box abstraction, this guide helps you explore the ecosystem, understand how independent pieces fit together, and orchestrate a team of specialized agents that work the way you want.
 
 ---
 
-**Build your own agent. Don't inherit someone else's boundaries.**
+## Philosophy: Lightweight Bridges Over Heavy Frameworks
+
+Most "multi-agent frameworks" force you into their way of thinking—dictating how agents talk, how state is stored, and how tools are called. 
+
+A resilient Personal Agent Team follows the Unix philosophy, exemplified by projects like **[Pi Telegram Server](https://github.com/ken196502/pi-telegram-server)**:
+1. **Agents are just processes:** An agent is a focused runtime session (like a `Pi` instance in `tmux`) with a specific role, prompt, and toolset.
+2. **Gateways are thin bridges, not brains:** Your messaging layer routes intent to the right agent session without hijacking the agent's internal logic.
+3. **Persistence is transparent:** Using native system primitives (`tmux`, filesystems, Git) means you can inspect, attach to, or take over any team member's workspace locally at any time.
+4. **Teamwork through composition:** A "Team" isn't a complex graph library—it's multiple specialized agent sessions coordinating via shared workspaces, message queues, or a lightweight router.
+
+---
+
+## How a Personal Agent Team is Built
+
+Think in composable layers and roles, not all-in-one platforms.
+
+| Layer | Team Responsibility | Examples |
+|---|---|---|
+| **Interface** | Where you direct the team (DMs, Topic Groups, Threads) | Telegram (Topics/Bots), Discord, Web |
+| **Gateway & Router** | Routes messages to specific agent roles or sessions | [Pi Telegram Server](https://github.com/ken196502/pi-telegram-server), Custom Bot Bridges |
+| **Agent Runtime** | Executes individual agent reasoning & coding loops | Pi, Claude Code, LangGraph, Agents SDK |
+| **Team Coordination** | How agents hand off tasks and share state | Shared Git repos, Markdown task boards, `tmux` sessions, A2A protocols |
+| **Memory & Context** | Shared team knowledge base and role-specific context | Local Markdown files, SQLite, Vector stores |
+| **Tools & Capabilities** | External actions assigned per role | MCP servers, CLI tools, APIs |
+| **Computer Use** | Visual and browser-level execution | Browser Use, Skyvern, Playwright |
+| **Scheduling** | Proactive background routines & standups | Cron, n8n, Systemd timers |
+| **Infrastructure** | Process isolation and session persistence | `tmux`, Docker, VPS, Local Mac/Linux server |
+
+Choose what your team needs. Replace what you don't.
+
+---
+
+## Reference Architecture: The Pi + Telegram Team Pattern
+
+Inspired by **[Pi Telegram Server](https://github.com/ken196502/pi-telegram-server)**, you don't need a heavy orchestrator to run a multi-agent team. You can bridge chat channels directly to persistent local CLI sessions:
+
+```text
+Telegram (User / Group Topics)
+       │
+       ▼
+  Bot Gateway (Thin Router)
+       │
+       ├──► [Pi Extension] ──► tmux: "architect-pi"  (Designs & writes specs)
+       ├──► [Pi Extension] ──► tmux: "coder-pi"      (Implements & runs tests)
+       └──► [Pi Extension] ──► tmux: "researcher-pi" (Scrapes web & summarizes)
+                                     │
+                                     ▼
+                         Shared Workspace (Git / Docs)
