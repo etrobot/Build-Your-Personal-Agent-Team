@@ -1,4 +1,4 @@
-# Build Your Own Personal Agent
+# Build-Your-Personal-Agent-Team
 
 **Build your own agent. Understand the pieces. Choose your boundaries.**
 
